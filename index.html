@@ -1,0 +1,26 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<title>Easy Table</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+		<script src="./lib/jquery.js"></script>
+		<script src="./src/easy-table-1.0.js"></script>
+		<link rel="stylesheet" href="main.css">
+	</head>
+	<body>
+		<table id="myTable"></table>
+		<script>
+			$(function() {
+				var data = [{one:'Row One', two:'Row One.One'},
+				{one:'Row Two', two:'Row Two.Two'},
+				{one:'Row Three', two:'Row Three.Three'},
+				{one:'Row Four', two:'Row Four.Four'}];
+				$("#myTable").easyTable({
+					columns: [{header:'First Header', key:'one'},
+								{header:'Second Header', key:'two'}],
+					data:data
+				});
+			});
+		</script>
+	</body>
+</html>
