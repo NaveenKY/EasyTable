@@ -3,21 +3,29 @@
 	<head>
 		<title>Easy Table</title>
 		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-		<script src="https://rawgit.com/NaveenKY/EasyTable/gh-pages/lib/jquery.js"></script>
-		<script src="https://rawgit.com/NaveenKY/EasyTable/gh-pages/src/easy-table-1.0.js"></script>
+		<script src="https://rawgit.com/NaveenKY/EasyTable/master/lib/jquery.js"></script>
+		<script src="https://rawgit.com/NaveenKY/EasyTable/master/src/easy-table-1.0.js"></script>
 		<link rel="stylesheet" href="https://rawgit.com/NaveenKY/EasyTable/master/css/main.css">
 	</head>
 	<body>
 		<table id="myTable"></table>
 		<script>
 			$(function() {
-				var data = [{one:'Row One', two:'Row One.One'},
-				{one:'Row Two', two:'Row Two.Two'},
-				{one:'Row Three', two:'Row Three.Three'},
-				{one:'Row Four', two:'Row Four.Four'}];
+				var data = [ { firstName: "Marvin", lastName: "Wooten", email: "risus.varius@ipsum.ca", phone: "895-0425", country: "United States" },
+							{ firstName: "Damian", lastName: "Patterson", email: "Nunc.sed.orci@duiquis.org", phone: "1-261-380-7033", country: "Iran" },
+							{ firstName: "Tiger", lastName: "Gilbert", email: "diam@etpedeNunc.co.uk", phone: "180-4798", country: "Anguilla" },
+							{ firstName: "Emmanuel", lastName: "Mcintyre", email: "purus.Nullam.scelerisque@laoreetlectusquis.com", phone: "1-462-689-7643", country: "Afghanistan" },  { firstName: "Upton", lastName: "Chapman", email: "hendrerit@nequeetnunc.net", phone: "1-228-488-4099", country: "Turkmenistan" },
+							{ firstName: "Gregory", lastName: "Bowers", email: "id@orcilacusvestibulum.co.uk", phone: "1-207-389-0333", country: "United States Minor Outlying Islands" },
+							{ firstName: "Ralph", lastName: "Drake", email: "facilisis@imperdiet.co.uk", phone: "858-5034", country: "Sint Maarten" },
+							{ firstName: "Elton", lastName: "Hardin", email: "nunc.sit@sollicitudinorcisem.ca", phone: "365-2293", country: "Isle of Man" },
+							{ firstName: "Kamal", lastName: "Riggs", email: "nulla.In.tincidunt@lectus.net", phone: "225-8497", country: "Antigua and Barbuda" },
+							{ firstName: "Ryan", lastName: "Henry", email: "nulla.magna.malesuada@ligulaNullam.ca", phone: "573-6001", country: "Senegal" } ];
 				$("#myTable").easyTable({
-					columns: [{header:'First Header', key:'one'},
-								{header:'Second Header', key:'two'}],
+					columns: [{header:'First Name', key:'firstName'},
+								{header:'Last Name', key:'lastName'},
+								{header:'Email', key:'email'},
+								{header:'Phone', key:'phone'},
+								{header:'Country', key:'country'}],
 					data:data
 				});
 			});
