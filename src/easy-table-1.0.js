@@ -34,6 +34,37 @@
 					that.$contextMenu = null;
 				}
 			});
+			this.copyDialogTemplate = '<div class="easy-table-copydialog"> '+
+				'<div class="content"> '+
+					'<table class="width-100"> '+
+						'<tr class="height-40"> '+
+							'<td class="width-25"><b>Data</b></td> '+
+							'<td class="width-25"><input type="radio" name="data" value="SELECTED">Selected</input></td> '+
+							'<td class="width-25"><input type="radio" name="data" value="ALL" checked>All</input></td> '+
+						'</tr> '+
+						'<tr class="height-40"> '+
+							'<td class="width-25"><b>Type</b></td> '+
+							'<td class="width-25"><input type="radio" name="type" value="JSON" checked>JSON</input></td> '+
+							'<td class="width-25"><input type="radio" name="type" value="TEXT">Text</input></td> '+
+							'<td class="width-25"><input type="radio" name="type" value="XML">XML</input></td> '+
+						'</tr> '+
+						'<tr class="height-40 delimiter-block"> '+
+							'<td class="width-25"><b>Delimiter</b></td> '+
+							'<td class="width-25"><input class="delimiter-input" type="text" maxLength="1" value=";"/></td> '+
+						'</tr> '+
+						'<tr class="height-40 xmlnode-block"> '+
+							'<td class="width-25"><b>Parent Node</b></td> '+
+							'<td class="width-25"><input class="xml-parent-input" type="text" value="parent"/></td> '+
+							'<td class="width-25"><b>Child Node</b></td> '+
+							'<td class="width-25"><input class="xml-child-input" type="text" value="child"/></td> '+
+						'</tr> '+
+					'</table> '+
+					'<div class="action"> '+
+						'<button class="button-withoutborder" id="cancel">Cancel</button> '+
+						'<button class="button-withoutborder" id="ok">OK</button> '+
+					'</div> '+
+				'</div> '+
+			'</div>';
 		},
 		prepareTable: function () {
 			if(this.settings.columns && this.settings.columns instanceof Array && this.settings.columns.length > 0) {
@@ -89,7 +120,7 @@
 				if(this.settings.data) {
 					this.loadData(this.settings.data);
 				}
-				$($(this.element).find('tBody tr')).on("contextmenu", function(e) {
+				$('.easy-table').find('tBody tr').on("contextmenu", function(e) {
 					if(that.menuOpen && that.$contextMenu) {
 						document.body.removeChild(that.$contextMenu);
 						that.menuOpen = false;
@@ -159,7 +190,7 @@
 				$($(that.element).find('tBody tr')).addClass('selected');
 			};
 			that.copy = function(e){
-				that.copyData(JSON.stringify(that.selectedRows()));
+				setTimeout(function(){that.copyTable(e);}, 100);
 			};
 			that.exportTable = function(e){
 				that.exportToCSV(e);
@@ -190,11 +221,86 @@
 			});
 			return selectedData;
 		},
+		copyTable: function(e){
+			var that=this;
+			var dialog = document.createElement('div');
+			dialog.innerHTML = this.copyDialogTemplate;
+			document.body.appendChild(dialog);
+			$('.easy-table-copydialog').find('.delimiter-block').css('display', 'none');
+			$('.easy-table-copydialog').find('.xmlnode-block').css('display', 'none');
+			if(this.selectedRows().length <= 0) {
+				$('.easy-table-copydialog').find('input[name="data"]')[0].disabled = true;
+			}
+			$('.easy-table-copydialog').find('input[name="type"]').click(function(e){
+				if(e.currentTarget.value === 'TEXT') {
+					$('.easy-table-copydialog').find('.delimiter-block').css('display', 'table-row');
+				} else {
+					$('.easy-table-copydialog').find('.delimiter-block').css('display', 'none');
+				}
+				if(e.currentTarget.value === 'XML') {
+					$('.easy-table-copydialog').find('.xmlnode-block').css('display', 'table-row');
+				} else {
+					$('.easy-table-copydialog').find('.xmlnode-block').css('display', 'none');
+				}
+			});
+			$('.easy-table-copydialog').find('#ok').click(function(e){
+				var data = [];
+				if($('.easy-table-copydialog').find('input[name="data"]:checked').val() === 'SELETED') {
+					data = that.selectedRows();
+				} else {
+					data = that.settings.data;
+				}
+				if($('.easy-table-copydialog').find('input[name="type"]:checked').val() === 'JSON') {
+					that.copyData(JSON.stringify(data));
+				} else if($('.easy-table-copydialog').find('input[name="type"]:checked').val() === 'TEXT') {
+					var delim = $('.easy-table-copydialog').find('.delimiter-input').val();
+					var str = '';
+					data.forEach(function(row){
+						that.settings.columns.forEach(function(column){
+							str += row[column.key] + delim;
+						});
+						if(str[str.length-1] === delim){
+							str = str.substr(0,str.length-2);
+						}
+						str += '\n';
+					});
+					that.copyData(str);
+				} else {
+					var parentNode = $('.easy-table-copydialog').find('.xml-parent-input').val();
+					if(!parentNode){
+						parentNode = 'parent';
+					}
+					var childNode = $('.easy-table-copydialog').find('.xml-child-input').val();
+					if(!childNode){
+						childNode = 'child';
+					}
+					var doc = $.parseXML('<' + parentNode +'/>');
+					var xml = doc.getElementsByTagName(parentNode)[0];
+					var key, elem;
+					data.forEach(function(json){
+						var child = doc.createElement(childNode);
+						for (key in json) {
+							if (json.hasOwnProperty(key)) {
+								elem = doc.createElement(key);
+								$(elem).text(json[key]);
+								child.appendChild(elem);
+							}
+						}
+						xml.appendChild(child);
+					});
+					var xmlStr = new XMLSerializer().serializeToString(xml);
+					that.copyData(xmlStr.split('><').join('>\n<'));
+				}
+				$('.easy-table-copydialog').remove();
+			});
+			$('.easy-table-copydialog').find('#cancel').click(function(e){
+				$('.easy-table-copydialog').remove();
+			});
+		},
 		copyData: function(text){
-			var copyElement = document.createElement('input');
-			copyElement.setAttribute('type', 'text');
-			copyElement.setAttribute('value', text);
+			var copyElement = document.createElement('textarea');
 			copyElement = document.body.appendChild(copyElement);
+			copyElement.value = text;
 			copyElement.select();
 			try {
 				document.execCommand('copy');

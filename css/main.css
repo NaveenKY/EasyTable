@@ -1,3 +1,10 @@
+html,
+body {
+	padding: 0px;
+	margin: 0px;
+	font-family: Roboto, Noto, sans-serif;
+	-webkit-font-smoothing: antialiased;
+}
 .easy-table {
 	border: solid thin lightgray;
 	background-color: white;
@@ -5,7 +12,6 @@
 	-moz-box-shadow: 0 0 5px #888;
 	-webkit-box-shadow: 0 0 5px#888;
 	box-shadow: rgba(0, 0, 0, 0.137255) 0px 2px 2px 0px, rgba(0, 0, 0, 0.2) 0px 3px 1px -2px, rgba(0, 0, 0, 0.117647) 0px 1px 5px 0px;
-	color: rgb(117, 117, 117);
 	color: rgb(117, 117, 117);
 	display: table;
 	font-family: Roboto, Helvetica, Arial, sans-serif;
@@ -93,4 +99,82 @@
 	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#3da5ff', endColorstr='#3da5ff', GradientType=0 );
 	color:#ffffff;
 	text-shadow: 1px 2px #000000;
+}
+.easy-table-copydialog {
+	width: 100%;
+	height: 100%;
+	z-index: 1000;
+	position: absolute;
+	background-color: rgba(0,0,0,0.5);
+	top: 0;
+	left: 0;
+}
+@keyframes slideout {
+	from {top: 0%;}
+	to {top: 30%;}
+}
+.easy-table-copydialog .content {
+	position: relative;
+	width: 40%;
+	height: 30%;
+	left: 30%;
+	top: 30%;
+	background-clip: border-box;
+	background-color: rgb(255, 255, 255);
+	background-origin: padding-box;
+	box-shadow: rgba(0, 0, 0, 0.137255) 0px 16px 24px 2px, rgba(0, 0, 0, 0.117647) 0px 6px 30px 5px, rgba(0, 0, 0, 0.4) 0px 8px 10px -5px;
+	box-sizing: border-box;
+	color: rgb(33, 33, 33);
+	display: block;
+	color: rgb(33, 33, 33);
+	font-size: 14px;
+	font-weight: normal;
+	line-height: 20px;
+	padding: 20px 0px 0px 20px;
+	animation-duration: 1s;
+	animation-name: slideout;
+}
+.easy-table-copydialog .action {
+	position: absolute;
+	bottom: 10%;
+	right: 10%;
+}
+.width-100 {
+	width: 100%;
+}
+.width-75 {
+	width: 75%;
+}
+.width-50 {
+	width: 50%;
+}
+.width-25 {
+	width: 25%;
+}
+.width-10 {
+	width: 10%;
+}
+.height-40 {
+	height: 40px;
+}
+.delimiter-input,
+.xml-parent-input,
+.xml-child-input {
+	width: 60px;
+	margin-left: 5px;
+	padding-left: 5px;
+}
+.button-withoutborder {
+	border: none;
+	background-color: Transparent;
+	cursor: pointer;
+	color: rgb(63, 81, 181);
+	outline: 0;
+	font-size: 16px;
+}
+.button-withoutborder:hover {
+	font-weight: bold;
+}
+.button-withoutborder:active {
+	background-color: #e2e2e2;
 }
