@@ -50,7 +50,7 @@
 						'</tr> '+
 						'<tr class="height-40 delimiter-block"> '+
 							'<td class="width-25"><b>Delimiter</b></td> '+
-							'<td class="width-25"><input class="delimiter-input" type="text" maxLength="1" value=";"/></td> '+
+							'<td class="width-25"><input class="delimiter-input" type="text" maxLength="1" value="|"/></td> '+
 						'</tr> '+
 						'<tr class="height-40 xmlnode-block"> '+
 							'<td class="width-25"><b>Parent Node</b></td> '+
@@ -245,7 +245,7 @@
 			});
 			$('.easy-table-copydialog').find('#ok').click(function(e){
 				var data = [];
-				if($('.easy-table-copydialog').find('input[name="data"]:checked').val() === 'SELETED') {
+				if($('.easy-table-copydialog').find('input[name="data"]:checked').val() === 'SELECTED') {
 					data = that.selectedRows();
 				} else {
 					data = that.settings.data;
